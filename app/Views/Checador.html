@@ -1,0 +1,50 @@
+{% include 'header_clock.html' %}
+
+<div id="clock" class="light">
+	<div class="display">
+		<div class="weekdays"></div>
+		<div class="ampm"></div>
+		<div class="alarm"></div>
+		<div class="digits"></div>
+	</div>
+</div>
+
+<div id="qr">
+	<div>
+		<select id="qrCamera" class="form-control center-block" style="display:none;"></select>
+		<canvas id="qrVideo" class="center-block"></canvas>
+		<ul></ul>
+		<input type="hidden" id="qrResult" data-destiny="">
+	</div>
+	<div>
+		<label id="result">Acerca tu tarjeta a la cámara</label>
+	</div>
+</div>
+
+<audio src="{{constant("BASE_URL")}}html/beep.wav" autostart="false" width="0" height="0" id="sonido"></audio>
+
+<script type="text/javascript">
+var arg = {
+	resultFunction: function(result) {
+		if ($('#qrVideo').is(':visible')) {
+			$('#result').html('HOLA ' + result.code);
+			var sound = document.getElementById('sonido');
+			sound.play();
+			var supportsVibrate = "vibrate" in navigator;
+			navigator.vibrate(250);
+			$('#qrVideo').hide(0).delay(5000).show(0);
+		}
+	}
+};
+
+var decoder  = $('#qrVideo').WebCodeCamJQuery(arg).data().plugin_WebCodeCamJQuery;
+
+$('#qrCamera').on('change', function(){
+	decoder.stop().play();
+});
+
+$(function() {
+	decoder.buildSelectMenu('#qrCamera');
+	decoder.play();
+})
+</script>
