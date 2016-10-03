@@ -1,0 +1,77 @@
+{% include 'header_full.html' %}
+{% include 'menu.html' %}
+
+<div class="container">
+	<div class="row">
+		<h1>Usuarios</h1>
+		<button type="button" class="btn btn-primary"><i class="fa fa-plus-circle" aria-hidden="true" onclick="$('#modal-jefe').modal('show');"> <span>Nuevo</span></i></button>
+		<table data-toggle="table" data-search="true" data-show-export="true" data-page-size="20" data-pagination="true" data-show-pagination-switch="true" data-show-columns="true" data-mobile-responsive="true" data-sortable="true">
+			<thead>
+				<tr>
+					<th data-sortable="true">Id</th><th data-sortable="true">Nombre</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for usuario in usuarios %}
+				<tr>
+					<td>{{ usuario.userId|e }}</td>
+					<td>{{ usuario.userName|e }}</td>
+				</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+	</div>
+</div>
+
+<div id="modal-jefe" class="modal fade">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				<h4 id="modal-titulo" class="modal-title">Nuevo usuario</h4>
+			</div>
+			<div class="modal-body">
+				<div class="row">
+					<div class="col-xs-12">
+						<form role="form">
+	  						<div class="form-group">
+								<label>Clave <input type="text" class="form-control col-lg-3" name="userName"></label>
+								<label>Password <input type="text" class="form-control col-lg-8" name="userPassword"></label>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-success"><i class="fa fa-cloud" aria-hidden="true" onclick="guardar($('form').serializeJSON())"> <span>Guardar</span></i></button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript">
+// $('table').on('dbl-click-row.bs.table', function ( row, element ) {
+// 	$('form [name=userName]').val(element[0]);
+// 	$('form [name=userPassword]').val('');
+// 	$('#modal-jefe').modal('show');
+// });
+
+function guardar(form) {
+	loader.show()
+	sincco.consumirAPI('POST',BASE_URL + 'usuarios/apiJefes',{userData:form})
+	.done(function(data) {
+		loader.hide()
+		if(data.respuesta) {
+			window.location = BASE_URL + 'usuarios'
+		} else {
+			toastr.warning('Verifica tu usuario y contraseña.', 'Error de acceso')
+		}
+	}).fail(function(jqXHR, textStatus, errorThrown) {
+		console.log(errorThrown);
+		toastr.error('Error al hacer la petición de acceso.', 'Intenta de nuevo')
+		loader.hide()
+	})
+}
+</script>
+
+{% include 'footer_full.html' %}
