@@ -87,6 +87,22 @@ var dashboard = new function() {
 
 }
 
+// reportechecadas.html
+var reportechecadas = new function() {
+
+	this.filtrar = function() {
+		jQuery.redirect(BASE_URL + 'reportes/checadas', {'fechaInicio': $('#fechaInicio').val()});
+	}
+
+	this.init = function() {
+		$('#fecha-inicio').datetimepicker({
+			useCurrent: true,
+			format: 'YYYY-MM-DD'
+		});
+	}
+
+}
+
 //login.html
 var login = new function() {
 
