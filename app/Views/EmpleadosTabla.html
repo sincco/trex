@@ -1,23 +1,21 @@
-{% include 'header.html' %}
+{% include 'header_full.html' %}
 {% include 'menu.html' %}
 
 <div class="container">
 	<div class="row">
-		<h1>Jefes de cuadrilla</h1>
+		<h1>Empleados</h1>
 		<button type="button" class="btn btn-primary"><i class="fa fa-plus-circle" aria-hidden="true" onclick="$('#modal-jefe').modal('show');"> <span>Nuevo</span></i></button>
 		<table data-toggle="table" data-search="true" data-show-export="true" data-page-size="20" data-pagination="true" data-show-pagination-switch="true" data-show-columns="true" data-mobile-responsive="true" data-sortable="true">
 			<thead>
 				<tr>
-					<th data-sortable="true">Id</th><th data-sortable="true">Nombre</th><th>Cuadrilla</th><th data-sortable="true">Descripcion</th>
+					<th data-sortable="true">Empleado</th><th data-sortable="true">Nombre</th>
 				</tr>
 			</thead>
 			<tbody>
-				{% for usuario in usuarios %}
+				{% for empleado in empleados %}
 				<tr>
-					<td>{{ usuario.userName|e }}</td>
-					<td>{{ usuario.nombre|e }}</td>
-					<td>{{ usuario.cuadrilla|e }}</td>
-					<td>{{ usuario.descripcion|e }}</td>
+					<td>{{ empleado.numeroEmpleado|e }}</td>
+					<td>{{ empleado.nombre|e }}</td>
 				</tr>
 				{% endfor %}
 			</tbody>
@@ -30,22 +28,22 @@
 		<div class="modal-content">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-				<h4 id="modal-titulo" class="modal-title">Jefe de cuadrilla</h4>
+				<h4 id="modal-titulo" class="modal-title">Datos de empleado</h4>
 			</div>
 			<div class="modal-body">
 				<div class="row">
 					<div class="col-xs-12">
 						<form role="form">
 	  						<div class="form-group">
-								<label>Clave <input type="text" class="form-control col-lg-3" name="userName"></label>
+								<label>Clave <input type="text" class="form-control col-lg-3" name="numeroEmpleado"></label>
 								<label>Nombre <input type="text" class="form-control col-lg-9" name="nombre"></label>
-								<label>Password <input type="text" class="form-control col-lg-8" name="userPassword"></label>
-								<label>Cuadrilla 
-								<select class="form-control col-lg-8" name="cuadrilla">
-									{% for cuadrilla in cuadrillas %}
-									<option value="{{ cuadrilla.cuadrilla|e }}">{{ cuadrilla.descripcion|e }}</option>
-									{%endfor %}
-								</select></label>
+								<h4>Foto</h4>
+								<div class="row">
+									<div class="col-xs-4">
+										<video id="video" autoplay style="width:100%;"></video>
+										<canvas id="canvas" class="center-block"></canvas>
+									</div>
+								</div>
 							</div>
 						</form>
 					</div>
@@ -60,29 +58,49 @@
 
 <script type="text/javascript">
 $('table').on('dbl-click-row.bs.table', function ( row, element ) {
-	$('form [name=userName]').val(element[0]);
+	$('form [name=numeroEmpleado]').val(element[0]);
 	$('form [name=nombre]').val(element[1]);
-	$('form [name=userPassword]').val('');
-	$('form [name=cuadrilla]').val(element[2]);
 	$('#modal-jefe').modal('show');
+	if(navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+		navigator.mediaDevices.getUserMedia({ video: true }).then(function(stream) {
+			video.src = window.URL.createObjectURL(stream);
+			video.play();
+			$('.close').click(function(){
+				stopStream(stream);
+			});
+		});
+	}
 });
 
+function stopStream(stream) {
+	console.log('stop called');
+	stream.getVideoTracks().forEach(function (track) {
+		track.stop();
+	});
+}
+
 function guardar(form) {
+	context.drawImage(video, 0, 0, 150, 150);
 	loader.show()
-	sincco.consumirAPI('POST',BASE_URL + 'catalogos/usuarios/apiJefes',{userData:form})
+	sincco.consumirAPI('POST',BASE_URL + 'empleados/asignafoto',{data:form, foto:canvas.toDataURL()})
 	.done(function(data) {
 		loader.hide()
 		if(data.respuesta) {
-			window.location = BASE_URL + 'catalogos/usuarios'
+			window.location = BASE_URL + 'empleados'
 		} else {
-			toastr.warning('Verifica tu usuario y contraseña.', 'Error de acceso')
+			toastr.warning('Error al guardar la foto del empleado.', 'Intenta de nuevo')
 		}
 	}).fail(function(jqXHR, textStatus, errorThrown) {
 		console.log(errorThrown);
-		toastr.error('Error al hacer la petición de acceso.', 'Intenta de nuevo')
+		toastr.error('Error al hacer la petición.', 'Intenta de nuevo')
 		loader.hide()
 	})
 }
+
+var canvas = document.getElementById('canvas');
+var context = canvas.getContext('2d');
+var video = document.getElementById('video');
+
 </script>
 
-{% include 'footer.html' %}
+{% include 'footer_full.html' %}
