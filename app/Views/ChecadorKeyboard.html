@@ -41,6 +41,7 @@
 		</div>
 		<div>
 			<h3>Teclea tu número de empleado</h3>
+			<input type="hidden" name="reloj" id="reloj" value="{{reloj}}">
 			<input type="text" name="empleado" id="empleado" value=""><button>Checar</button>
 		</div>
 	</div>
@@ -91,7 +92,7 @@ function checada() {
 	var empleado = findInJSON(empleados, 'numeroEmpleado', $('#empleado').val());
 	if (empleado[0] !== undefined) {
 		context.drawImage(video, 0, 0, 150, 150);
-		sincco.consumirAPI('POST','{{constant('BASE_URL')}}checador/apichecada', {empleado:$("#empleado").val(),foto:canvas.toDataURL()} )
+		sincco.consumirAPI('POST','{{constant('BASE_URL')}}checador/apichecada', {empleado:$("#empleado").val(),foto:canvas.toDataURL(),reloj:$("#reloj").val()} )
 		.done(function(data) {
 			if(data.respuesta) {
 				var sound = document.getElementById('sonido');

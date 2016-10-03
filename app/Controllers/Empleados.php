@@ -21,12 +21,4 @@ class EmpleadosController extends Sincco\Sfphp\Abstracts\Controller {
 		$data['foto'] = $this->getParams('foto');
 		new Response('json',['respuesta'=>$this->getModel('Empleados')->save($data)]);
 	}
-
-	public static function UTF8Parser( $array ) {
-		array_walk_recursive( $array, function( &$item, $key ){
-			if(!mb_detect_encoding( $item, 'utf-8', true ))
-				$item = utf8_encode( $item );
-		});
-		return $array;
-	}
 }

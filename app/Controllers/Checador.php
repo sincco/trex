@@ -11,13 +11,16 @@ class ChecadorController extends Sincco\Sfphp\Abstracts\Controller {
 	 */
 	public function index() {
 		$view = $this->newView('ChecadorKeyboard');
+		$view->reloj = intval($this->getParams('reloj'));
+		if ($view->reloj == 0) {
+			$view->reloj = 1;
+		}
 		$view->empleados = json_encode($this->UTF8Parser($this->getModel('Empleados')->getData()));
 		$view->render();
 	}
 
 	public function apiChecada() {
 		$data = $this->getParams();
-		$data['reloj'] = 1;
 		$model = $this->getModel('Checador');
 		new Response('json',['respuesta'=>$model->checada($data)]);
 		#$data = $this->getParams('foto');
