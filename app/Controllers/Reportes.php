@@ -15,6 +15,8 @@ class ReportesController extends Sincco\Sfphp\Abstracts\Controller {
 		if (trim($this->getParams('fechaInicio')) != '') {
 			$view->checadas = $this->getModel('Checador')->getChecadasDia($this->getParams());
 		}
+		$view->desde = $this->getParams('fechaInicio');
+		$view->hasta = $this->getParams('fechaFin');
 		$view->menus = $this->helper('UsersAccount')->createMenus();
 		$view->render();
 	}

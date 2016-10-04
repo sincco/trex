@@ -91,13 +91,23 @@ var dashboard = new function() {
 var reportechecadas = new function() {
 
 	this.filtrar = function() {
-		jQuery.redirect(BASE_URL + 'reportes/checadas', {'fechaInicio': $('#fechaInicio').val()});
+		jQuery.redirect(BASE_URL + 'reportes/checadas', {'fechaInicio': $('#fechaInicio').val(),'fechaFin': $('#fechaFin').val()});
 	}
 
 	this.init = function() {
+		$('#fecha-fin').datetimepicker({
+			format: 'YYYY-MM-DD'
+		});
 		$('#fecha-inicio').datetimepicker({
 			useCurrent: true,
 			format: 'YYYY-MM-DD'
+		});
+		$("#fecha-inicio").on("dp.change", function (e) {
+			$('#fecha-fin').data("DateTimePicker").minDate(e.date);
+			$('#fecha-fin').data("DateTimePicker").date(e.date);
+		});
+		$("#fecha-fin").on("dp.change", function (e) {
+			$('#fecha-inicio').data("DateTimePicker").maxDate(e.date);
 		});
 	}
 
