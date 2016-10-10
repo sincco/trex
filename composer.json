@@ -30,6 +30,7 @@
             "var/session",
             "var/log",
             "etc/config",
+            "etc/locale",
             "bkp"
         ]
     }

@@ -9,11 +9,10 @@
 		</div>
 		<div class="col-xs-9">
 			<h1>{{constant('APP_NAME')}}
-			<p class="lead">Debes tener una cuenta para accesar al sistema</p>
+			<p class="lead">{{ translate('Debes tener una cuenta para accesar al sistema') }}</p>
 		</div>
 	</div>
 </div>
-
 <script type="text/javascript">{{_self.getTemplateName() | replace( { '.html':'' } ) | lower }}.init();</script>
 
 {% include 'footer.html' %}

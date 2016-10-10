@@ -11,6 +11,7 @@ class IndexController extends Sincco\Sfphp\Abstracts\Controller {
 	 * @return none
 	 */
 	public function index() {
+		define('APP_TRANSLATE', 'en_US');
 		if(!Login::isLogged()) {
 			$view = $this->newView('Login');
 			if(file_exists(PATH_ROOT.'/html/img/logo_cliente.jpg'))
