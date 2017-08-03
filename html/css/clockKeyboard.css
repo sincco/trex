@@ -490,7 +490,7 @@ footer #tzine-actions iframe{
 
 #qr { margin-left: 25%; }
 #qr div { float: left; width:35%; }
-#video { width: 50%; height: 50%; }
+#video { width: 85%; height: 85%; }
 #canvas { display: none; }
 button { background-color: #4CAF50; border: none; color: white; padding: 15px 32px; text-align: center; text-decoration: none; display: inline-block; font-size: 16px; }
 input[type=text] { width: 100%; padding: 12px 20px; margin: 8px 0; box-sizing: border-box; border-radius: 5px; border-style: ridge; font-size: 1.5em; padding: 0.3em; }
