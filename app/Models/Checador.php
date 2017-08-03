@@ -4,6 +4,7 @@ class ChecadorModel extends Sincco\Sfphp\Abstracts\Model
 {
 	public function checada($data)
 	{
+		unset($data['checador']);
 		$query = "INSERT INTO checadas SET empleado=:empleado, fecha=NOW(), reloj=:reloj, foto=:foto;";
 		return $this->connector->query($query,$data);
 	}
