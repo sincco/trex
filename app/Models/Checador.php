@@ -5,7 +5,7 @@ class ChecadorModel extends Sincco\Sfphp\Abstracts\Model
 	public function checada($data)
 	{
 		unset($data['checador']);
-		$empleados = $this->connector->query("SELECT empleado FROM `empleados` where numeroEmpleado =:empleado", ['empleado'=>$data['empleado']);
+		$empleados = $this->connector->query("SELECT empleado FROM empleados where numeroEmpleado =:empleado", ['empleado'=>$data['empleado']]);
 		$empleado = $empleados[0];
 		$data['empleado']=$empleado['empleado'];
 		$query = "INSERT INTO checadas SET empleado=:empleado, fecha=NOW(), reloj=:reloj, foto=:foto;";
